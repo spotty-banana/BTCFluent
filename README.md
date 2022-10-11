@@ -8,7 +8,7 @@ Really fluent BTC experience.
 * Backend (Python django)
 * Web Server: (nginx / uwsgi) ?
 * Database: MariaDB
-* task processing: redis + celery
+* task processing: redis
 * Frontend ?
 
 
