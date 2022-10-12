@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'two_factor',
     'otp_yubikey',
     'django_extensions',
+    'huey.contrib.djhuey',  # Add this to the list.
     ]
 
 MIDDLEWARE = [

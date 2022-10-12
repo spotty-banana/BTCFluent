@@ -42,6 +42,10 @@ Really fluent BTC experience.
 
 		apt install redis
 
-6. Run the app
+6. Generate secret key
+		
+		openssl rand -base64 35 > secret_key.txt
+
+7. Run the app
 
 		python manage.py runserver_plus
