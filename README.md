@@ -38,6 +38,10 @@ Really fluent BTC experience.
 
 		cp BTCFluent/local_settings.py.template BTCFluent/local_settings.py
 
+5. Install redis
+
+		apt install redis
+
 6. Run the app
 
 		python manage.py runserver_plus
