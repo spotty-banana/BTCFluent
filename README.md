@@ -35,4 +35,9 @@ Really fluent BTC experience.
 		python manage.py migrate
 
 4. Setup local_settings.py to suit your local needs
-6. runserver?
+
+		cp BTCFluent/local_settings.py.template BTCFluent/local_settings.py
+
+6. Run the app
+
+		python manage.py runserver_plus
