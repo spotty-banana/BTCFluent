@@ -11,7 +11,7 @@ from datetime import datetime
 
 class WalletUser(AbstractBaseUser):
     """
-    An individual signing in to the system. Might be customer, an employee or both
+    An individual user. Username and password are required. Other fields are optional.
     """
 
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)

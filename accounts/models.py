@@ -51,7 +51,6 @@ class Asset(models.Model):
             from eth_utils import is_address
             if is_address(add):
                 return add
-
             else:
                 return None
 

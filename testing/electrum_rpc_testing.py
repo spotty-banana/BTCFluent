@@ -19,7 +19,8 @@ def electrum_command(command, params):
         "method": command,
         "params": params,    
     }
-    response = requests.post(electrum_rpc_url, json=payload).json()
+    response = requests.post(electrum_rpc_url, json=payload)
+    response_json = response.json()
 
     pp.pprint(response)
 
