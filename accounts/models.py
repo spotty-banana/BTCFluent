@@ -4,6 +4,7 @@ from django.db.models import Sum
 from django.db.models import F, Q
 from decimal import Decimal
 from django.conf import settings
+import coinaddrvalidator
 
 class TxType(models.IntegerChoices):
     DEPOSIT = 1
@@ -39,25 +40,9 @@ class Asset(models.Model):
     #boolean for securing singular execution of tracing
     scan_started_at = models.DateTimeField(default=None, null=True)
 
-    def validate_address(self, add):
-
-        if self.ticker == "BTC":
-            from CryptoAddressValidation.CryptoAddressValidation import Validation
-            if Validation.is_address("BTC", add):
-                return add
-            else:
-                return None
-        elif self.ticker == "ETH":
-            from eth_utils import is_address
-            if is_address(add):
-                return add
-            else:
-                return None
-
-        else:
-            return None
-
-
+    def validate_address(self, address):
+        validation_result = coinaddrvalidator.validate(self.ticker,address)
+        return validation_result.valid
 
 
     def __str__(self):
