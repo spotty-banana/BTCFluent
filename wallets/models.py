@@ -3,7 +3,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
-from accounts.models import Account, Outgoingtransaction, Transaction
+from accounts.models import Account, Outgoingtransaction, Transaction, Asset
 from django.forms import ModelForm
 from datetime import datetime
 
@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
             raise ValueError("You need an username")
         user= self.model(
             username=username,
+            btc_account = Account.objects.create(asset=Asset.objects.get(id=1, ticker="BTC"))
             )
         user.set_password(password)
         user.save(using=self._db)
