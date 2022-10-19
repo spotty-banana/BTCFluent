@@ -51,10 +51,12 @@ class Asset(models.Model):
     class Meta:
         pass
 
-# ID, Ticker, unit, description
+# ID, Ticker, atomic unit, base unit, description
 DEFAULT_ASSETS = (
-    (1, 'BTC', 'sats', ''),
-    (2, 'ETH', 'wei', ''),
+    (1, 'BTC', 'sats', 'BTC', ''),
+    (2, 'USD', 'cents', 'USD', ''),
+    (3, 'EUR', 'cents', 'EUR', ''),
+    (4, 'CHF', 'rappen', 'CHF', ''),
 )
 
 def asset_identifier(asset_id):
