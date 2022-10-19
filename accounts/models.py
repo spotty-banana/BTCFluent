@@ -253,25 +253,8 @@ class Account(models.Model):
         # Search if the address is already in our database and do transaction accordingly
         asset_address = AssetAddress.objects.filter(address=to_address, asset=self.asset).first()
         if asset_address:
-            other_account = asset_address.account
-            new_balance = self.balance - amount
-            rows_updated = Account.objects.filter(id=self.id, balance=self.balance).update(balance=new_balance)
-            if rows_updated == 1:
-                self.balance = new_balance
-                tx = Transaction.objects.create(asset=self.asset, from_account=self, to_account=other_account, amount=amount, 
-                    tx_type=TxType.TRANSFER, from_balance_before_tx=new_balance + amount, to_balance_before_tx=other_account.balance,
-                    to_internal_address=asset_address)
-                rows_updated_2 = Account.objects.filter(id=other_account.id).update(balance=F('balance') + amount)
-                if rows_updated_2 < 1:
-                    # TODO: log this error somewhere
-                    pass
-
-                return tx
-
-            elif rows_updated > 1:
-                raise Exception("multiple rows were updated")
-
-            return 
+            self.send_to_account(asset_address.account, amount, TxType.TRANSFER)
+            return
 
         #take the balance and fee out of the account
         from_balance_before_tx = self.balance
