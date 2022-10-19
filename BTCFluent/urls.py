@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import include, path
 from two_factor.urls import urlpatterns as tf_urls
 from two_factor.admin import AdminSiteOTPRequired
+import wallets.views
 
 admin.site.__class__ = AdminSiteOTPRequired
 
@@ -27,5 +28,7 @@ admin.site.__class__ = AdminSiteOTPRequired
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('', wallets.views.index),
+    path('create', wallets.views.create),
     path('', include(tf_urls)),
 ]
