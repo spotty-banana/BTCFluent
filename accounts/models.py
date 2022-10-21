@@ -339,18 +339,16 @@ class Account(models.Model):
             self.balance = new_balance
             tx = Transaction.objects.create(asset=self.asset, from_account=self, to_account=other_account,
                                             amount=amount, tx_type=txtype, from_balance_before_tx=new_balance + amount,
-                                            to_balance_before_tx=other_account.balance)
-            if internal_address:
-                tx.to_internal_address = internal_address
-                tx.save()
+                                            to_balance_before_tx=other_account.balance,
+                                            to_internal_address=internal_address)
             rows_updated_2 = Account.objects.filter(id=other_account.id).update(balance=F('balance') + amount)
             if rows_updated_2 < 1:
                 # TODO: log this error somewhere
-                raise Exception("acc to not updated")
                 pass
 
         elif rows_updated > 1:
             raise Exception("multiple rows were updated")
+
         elif rows_updated < 1:
             raise Exception("no rows updated")
 
