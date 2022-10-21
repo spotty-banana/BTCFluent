@@ -346,6 +346,7 @@ class Account(models.Model):
             rows_updated_2 = Account.objects.filter(id=other_account.id).update(balance=F('balance') + amount)
             if rows_updated_2 < 1:
                 # TODO: log this error somewhere
+                raise Exception("acc to not updated")
                 pass
 
         elif rows_updated > 1:

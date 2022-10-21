@@ -50,7 +50,15 @@ class AccountModelTests(TestCase):
         Transaction.objects.create(created_at=timezone.now(), asset=user1.btc_account.asset,
                                    to_account=user1.btc_account, amount=10000, tx_type=TxType.DEPOSIT)
         user1.btc_account.balance = 10000
+        user1.btc_account.save()
+        user2.btc_account.save()
+
         user1.btc_account.send_to_account(user2.btc_account, 1000, TxType.TRANSFER)
+        user1.btc_account.save()
+        user2.btc_account.save()
+
+        self.assertEqual(user1.btc_account.balance, 9000)
+        self.assertEqual(user2.btc_account.balance, 1000)
 
 
 
