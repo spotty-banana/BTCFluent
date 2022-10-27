@@ -253,25 +253,8 @@ class Account(models.Model):
         # Search if the address is already in our database and do transaction accordingly
         asset_address = AssetAddress.objects.filter(address=to_address, asset=self.asset).first()
         if asset_address:
-            other_account = asset_address.account
-            new_balance = self.balance - amount
-            rows_updated = Account.objects.filter(id=self.id, balance=self.balance).update(balance=new_balance)
-            if rows_updated == 1:
-                self.balance = new_balance
-                tx = Transaction.objects.create(asset=self.asset, from_account=self, to_account=other_account, amount=amount, 
-                    tx_type=TxType.TRANSFER, from_balance_before_tx=new_balance + amount, to_balance_before_tx=other_account.balance,
-                    to_internal_address=asset_address)
-                rows_updated_2 = Account.objects.filter(id=other_account.id).update(balance=F('balance') + amount)
-                if rows_updated_2 < 1:
-                    # TODO: log this error somewhere
-                    pass
-
-                return tx
-
-            elif rows_updated > 1:
-                raise Exception("multiple rows were updated")
-
-            return 
+            self.send_to_account(asset_address.account, amount, TxType.TRANSFER, asset_address)
+            return
 
         #take the balance and fee out of the account
         from_balance_before_tx = self.balance
@@ -339,7 +322,7 @@ class Account(models.Model):
         else:
             raise Exception(" %d feeaccount balance not updated" % (self.asset.ticker))
 
-    def send_to_account(self, other_account, amount, txtype):
+    def send_to_account(self, other_account, amount, txtype, internal_address=None):
         if other_account.asset_id != self.asset_id:
             raise Exception("Mismatching assets")
         if amount <= 0:
@@ -354,7 +337,10 @@ class Account(models.Model):
         rows_updated = Account.objects.filter(id=self.id, balance=self.balance).update(balance=new_balance)
         if rows_updated == 1:
             self.balance = new_balance
-            tx = Transaction.objects.create(asset= self.asset, from_account=self, to_account=other_account, amount=amount, tx_type=txtype, from_balance_before_tx=new_balance + amount, to_balance_before_tx= other_account.balance)
+            tx = Transaction.objects.create(asset=self.asset, from_account=self, to_account=other_account,
+                                            amount=amount, tx_type=txtype, from_balance_before_tx=new_balance + amount,
+                                            to_balance_before_tx=other_account.balance,
+                                            to_internal_address=internal_address)
             rows_updated_2 = Account.objects.filter(id=other_account.id).update(balance=F('balance') + amount)
             if rows_updated_2 < 1:
                 # TODO: log this error somewhere
@@ -362,6 +348,9 @@ class Account(models.Model):
 
         elif rows_updated > 1:
             raise Exception("multiple rows were updated")
+
+        elif rows_updated < 1:
+            raise Exception("no rows updated")
 
     def get_new_address(self):
         address = AssetAddress.objects.filter(asset=self.asset, account=None, incomingtransaction=None).order_by('created_at').first()
