@@ -8,9 +8,9 @@ urlpatterns = [
     path('wallets/create', views.create, name='create'),
     path('', views.index, name='wallet_index'),
     # ex: /polls/5/
-    #path('<int:question_id>/', views.detail, name='detail'),
+    # path('<int:question_id>/', views.detail, name='detail'),
     # ex: /polls/5/results/
-    #path('<int:question_id>/results/', views.results, name='results'),
+    # path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/
-    #path('<int:question_id>/vote/', views.vote, name='vote'),
+    # path('<int:question_id>/vote/', views.vote, name='vote'),
 ]

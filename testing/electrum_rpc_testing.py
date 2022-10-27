@@ -1,5 +1,6 @@
-import requests
 import pprint
+
+import requests
 
 # first look how to set up rpc here: https://electrum.readthedocs.io/en/latest/jsonrpc.html
 
@@ -11,18 +12,20 @@ electrum_rpc_url = "http://user:password==@127.0.0.1:7777"
 
 scanned_to_height = 694019
 
+
 def electrum_command(command, params):
     # Example echo method
     payload = {
         "jsonrpc": "2.0",
         "id": 0,
         "method": command,
-        "params": params,    
+        "params": params,
     }
     response = requests.post(electrum_rpc_url, json=payload)
     response_json = response.json()
 
     pp.pprint(response)
+
 
 serialized_zx = "xxx"
 
@@ -34,11 +37,9 @@ electrum_command("onchain_history", {"wallet": wallet_path, "from_height": scann
 electrum_command("gettransaction", ["zzz"])
 electrum_command("deserialize", [serialized_zx])
 
-
 electrum_command("getunusedaddress", {"wallet": wallet_path})
 
 electrum_command("getunusedaddress", {"wallet": wallet_path})
-
 
 """
 electrum commands: 
