@@ -1,14 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-import hashlib
-import os
 import base64
-from wallets.models import WalletUser
-from accounts.models import Account, Asset
-from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.contrib.auth import authenticate, login
+import os
+
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from wallets.models import WalletUser
 
 
 def index(request):
@@ -36,8 +34,8 @@ def create(request):
     if user is not None:
         login(request, user)
 
-        messages.add_message(request, messages.INFO, 'Username %s Password %s' % (
-            new_user.username, generated_password))
+        messages.add_message(request, messages.INFO,
+                             'Username %s Password %s' % (new_user.username, generated_password))
 
         return redirect("/")
 

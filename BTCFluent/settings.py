@@ -10,13 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-from pathlib import Path
 import os
-
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parents[1]
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -29,7 +27,6 @@ with open(os.path.join(BASE_DIR, 'secret_key.txt')) as f:
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -50,7 +47,7 @@ INSTALLED_APPS = [
     'otp_yubikey',
     'django_extensions',
     'huey.contrib.djhuey',  # Add this to the list.
-    ]
+]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -84,7 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BTCFluent.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -94,7 +90,6 @@ DATABASES = {
         'NAME': BASE_DIR + 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
@@ -134,24 +129,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 ELECTRUM_WALLET_PATH = ""
 ELECTRUM_RPC_URL = ""
 REDIS_URL = ""
-#HTTPS SETTINGS
+# HTTPS SETTINGS
 
-#SESSION_COOKIE_SECURE = True
-#CSRF_COOKIE_SECURE = True
-#SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
 
 # HSTS settings
-#SECURE_HSTS_SECONDS = 31536000 # 1 year
-#SECURE_HSTS_PRELOAD = True
-#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_SECONDS = 31536000 # 1 year
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
-#Set session expiration rules
+# Set session expiration rules
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 60 * 60 * 8 #8 hour
+SESSION_COOKIE_AGE = 60 * 60 * 8  # 8 hour
 
 # Celery Configuration Options
 
@@ -160,19 +154,17 @@ CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT= os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 LOGIN_URL = 'two_factor:login'
 
 # this one is optional 
 LOGIN_REDIRECT_URL = '/dashboard/'
-
 
 try:
     from BTCFluent.local_settings import *

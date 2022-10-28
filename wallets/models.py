@@ -1,11 +1,8 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils.translation import gettext_lazy as _
-from accounts.models import Account, Outgoingtransaction, Transaction, Asset
-from django.forms import ModelForm
-from datetime import datetime
+from accounts.models import Account, Asset
+
 
 # Create your models here.
 
@@ -14,10 +11,10 @@ class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
         if not username:
             raise ValueError("You need an username")
-        user= self.model(
+        user = self.model(
             username=username,
-            btc_account = Account.objects.create(asset=Asset.objects.get(id=1, ticker="BTC"))
-            )
+            btc_account=Account.objects.create(asset=Asset.objects.get(id=1, ticker="BTC"))
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -27,11 +24,11 @@ class UserManager(BaseUserManager):
             raise ValueError("You need an email")
         if not username:
             raise ValueError("You need an username")
-        user= self.create_user(
+        user = self.create_user(
             email=email,
             username=username,
             password=password,
-            )
+        )
         user.is_admin = True
         user.is_superuser = True
         user.is_staff = True
@@ -39,6 +36,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+
 
 class WalletUser(AbstractBaseUser):
     """
@@ -51,7 +49,7 @@ class WalletUser(AbstractBaseUser):
 
     username = models.CharField(max_length=50, unique=True)
 
-    btc_account = models.ForeignKey(Account, on_delete=models.PROTECT,)
+    btc_account = models.ForeignKey(Account, on_delete=models.PROTECT, )
 
     USERNAME_FIELD = "username"
     # REQUIRED_FIELDS = ["username"]
