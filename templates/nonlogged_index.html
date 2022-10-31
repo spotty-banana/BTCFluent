@@ -5,7 +5,15 @@
 <h1>BTCFluent - the fluent Bitcoin experience</h1>
 
 <p>Use bitcoins effortlessly</p>
+<form action="/login" method="post">
+Login: {{ authentification_form }}
+{% csrf_token %}
+<input type="submit" value="Submit">
+</form>
 
-<a href="/create">Create wallet</a>
+<br/>
+
+Or <a href="/create">Create a new wallet</a> <br/>
+
 
 {% endblock %}

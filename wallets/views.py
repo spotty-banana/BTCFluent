@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
+from django.contrib.auth.forms import AuthenticationForm
 from wallets.models import WalletUser
 
 
@@ -17,7 +18,27 @@ def index(request):
             'user': user
         })
 
-    return render(request, 'nonlogged_index.html')
+    if request.method == 'POST':
+        authentification_form = AuthenticationForm(request=request, data=request.POST)
+        if authentification_form.is_valid():
+            username = authentification_form.cleaned_data.get('username')
+            password = authentification_form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"You are now logged in as {username}")
+                return redirect("/")
+            else:
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        authentification_form = AuthenticationForm()
+
+
+    return render(request, 'nonlogged_index.html', {
+        'authentification_form': authentification_form
+    })
 
 
 def create(request):
