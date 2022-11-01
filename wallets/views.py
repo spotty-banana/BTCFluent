@@ -1,5 +1,4 @@
-import base64
-import os
+import secrets
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -19,10 +18,10 @@ def index(request):
         })
 
     if request.method == 'POST':
-        authentification_form = AuthenticationForm(request=request, data=request.POST)
-        if authentification_form.is_valid():
-            username = authentification_form.cleaned_data.get('username')
-            password = authentification_form.cleaned_data.get('password')
+        authentication_form = AuthenticationForm(request=request, data=request.POST)
+        if authentication_form.is_valid():
+            username = authentication_form.cleaned_data.get('username')
+            password = authentication_form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -33,19 +32,18 @@ def index(request):
         else:
             messages.error(request, "Invalid username or password.")
     else:
-        authentification_form = AuthenticationForm()
+        authentication_form = AuthenticationForm()
 
 
     return render(request, 'nonlogged_index.html', {
-        'authentification_form': authentification_form
+        'authentication_form': authentication_form
     })
 
 
 def create(request):
-    generated_password = base64.urlsafe_b64encode(
-        os.urandom(16)).replace(b'=', b'')
-    generated_username = b"satoshi-" + \
-        base64.urlsafe_b64encode(os.urandom(5)).replace(b'=', b'')
+    generated_password = secrets.token_urlsafe(16)
+    generated_username = "satoshi-" + \
+        secrets.token_urlsafe(5)
     new_user = WalletUser.objects.create_user(username=generated_username,
                                               password=generated_password)
     new_user.save()
