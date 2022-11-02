@@ -17,15 +17,14 @@ from django.contrib import admin
 from django.urls import include, path
 from two_factor.admin import AdminSiteOTPRequired
 from two_factor.urls import urlpatterns as tf_urls
-
-import wallets.views
+from wallets.urls import urlpatterns as wallets_urls
 
 admin.site.__class__ = AdminSiteOTPRequired
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
-    path('', wallets.views.index),
-    path('create', wallets.views.create),
+    path('', include(wallets_urls)),
     path('', include(tf_urls)),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

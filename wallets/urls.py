@@ -4,9 +4,9 @@ from . import views
 
 app_name = 'wallets'
 urlpatterns = [
-    path('', views.index, name='wallet_index'),
-    path('wallets/create', views.create, name='create'),
-    path('', views.index, name='wallet_index'),
+    path('', views.index, name='wallets_index'),
+    path('create', views.create, name='create'),
+    path('login', views.index, name='wallets_login'),
     # ex: /polls/5/
     # path('<int:question_id>/', views.detail, name='detail'),
     # ex: /polls/5/results/
