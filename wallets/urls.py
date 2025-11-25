@@ -6,6 +6,7 @@ app_name = 'wallets'
 urlpatterns = [
     path('', views.index, name='wallets_index'),
     path('create', views.create, name='create'),
+    path('create/auto', views.create_auto, name='create_auto'),
     path('login', views.index, name='wallets_login'),
     # ex: /polls/5/
     # path('<int:question_id>/', views.detail, name='detail'),
